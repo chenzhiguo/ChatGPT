@@ -18,6 +18,11 @@ const loading = ref(false);
 async function send() {
   if (loading.value) return;
 
+  if (question.value == "") {
+    alert("提问问题不能为空，请输入问题后再提交！");
+    return;
+  }
+
   list.value.push({
     text: question.value,
     avatar: "/avatar.png",
@@ -82,7 +87,8 @@ function setScreen() {
 <template>
   <div class="page">
     <div class="begintitle">
-      <h1 v-show="!list.length" @click="send">ChatGPT</h1>
+      <h1 v-show="!list.length">ChatGPT</h1>
+      <h3 v-show="!list.length">个人代理，原则上这是个私用工具。有问题联系：chenzhiguo[at]live.com</h3>
     </div>
 
     <div id="myList">
@@ -179,14 +185,14 @@ function setScreen() {
     <div class="inputbox">
       <input
         v-bind:readonly="loading"
-        @keyup.enter="send"
+        @keydown.ctrl.enter="send"
         tabindex="0"
         data-id="root"
         rows="1"
         v-model="question"
         type="text"
         id="message"
-        placeholder="输入你的指令"
+        placeholder="输入你的指令，提交问题快捷键【Ctrl+Enter】"
         maxlength="100"
       />
       <div class="btn-send" id="submit-btn" @click="send">
@@ -354,6 +360,12 @@ function setScreen() {
 .begintitle h1 {
   padding: 50px;
   font-size: 28px;
+  font-weight: bold;
+  text-align: center;
+}
+.begintitle h3 {
+  padding: 0px 0px 50px 0px;
+  font-size: 18px;
   font-weight: bold;
   text-align: center;
 }
